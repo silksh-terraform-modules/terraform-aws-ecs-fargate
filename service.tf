@@ -25,7 +25,7 @@ resource "aws_ecs_service" "this" {
       for_each = length(var.lb_dns_name_secondary) > 0 ? [1] : []
       content {
         container_name   = var.service_name
-        container_port   = var.container_port_secondary
+        container_port   = length(var.container_port_secondary) > 0 ? var.container_port_secondary : var.container_port
         target_group_arn = aws_lb_target_group.secondary[0].arn
       }
     }

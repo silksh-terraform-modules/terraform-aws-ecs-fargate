@@ -38,7 +38,10 @@ module "ecs-app-example" {
   lb_dns_name_secondary = aws_lb.internal.dns_name
   lb_zone_id_secondary = aws_lb.internal.zone_id
   lb_listener_arn_secondary = aws_lb_listener.http_internal.arn
-  container_port_secondary = "8090"
+  ## define secondary port only if there is a secondary application on another port in the container
+  ## if you want to expose the same application on another loadbalancer (for ex. internal)
+  ## do not define that variable
+  # container_port_secondary = "8090"
 
   # data for creating gitlab variables json for deployment, 
   # have to be created first

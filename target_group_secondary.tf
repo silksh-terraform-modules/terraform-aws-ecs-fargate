@@ -3,7 +3,7 @@ resource "aws_lb_target_group" "secondary" {
     deregistration_delay          = var.deregistration_delay
     load_balancing_algorithm_type = "round_robin"
     name                          = "${var.service_name}-${var.env_name}-internal-${substr(uuid(), 0, 3)}"
-    port                          = var.container_port_secondary
+    port                          = length(var.container_port_secondary) > 0 ? var.container_port_secondary : var.container_port 
     protocol                      = "HTTP"
     slow_start                    = 0
     target_type                   = "instance"
