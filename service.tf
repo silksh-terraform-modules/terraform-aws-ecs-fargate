@@ -15,10 +15,14 @@ resource "aws_ecs_service" "this" {
         type = "ECS"
     }
 
-    load_balancer {
+    dynamic "load_balancer" {
+      for_each = var.worker == false ? [1] : []
+
+      content {
         container_name   = var.service_name
         container_port   = var.container_port
-        target_group_arn = aws_lb_target_group.this.arn
+        target_group_arn = aws_lb_target_group.this[0].arn
+      }
     }
 
     dynamic "load_balancer" {
@@ -52,6 +56,8 @@ resource "aws_ecs_service" "this" {
 }
 
 resource "aws_route53_record" "this" {
+  count = var.worker == false ? 1 : 0
+
   zone_id = var.zone_id
   name    = var.service_dns_name
   type    = "A"

@@ -265,3 +265,9 @@ variable "host_path" {
   default = ""
   description = "local path on host (volume mounted in fstab or local directory)"
 }
+
+variable "worker" {
+  default = false
+  type = bool
+  description = "if ommit load balancer connection"
+}
