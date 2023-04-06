@@ -271,3 +271,7 @@ variable "worker" {
   type = bool
   description = "if ommit load balancer connection"
 }
+
+variable subnet_ids {
+  default     = []
+}

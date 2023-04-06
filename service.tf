@@ -11,6 +11,10 @@ resource "aws_ecs_service" "this" {
     scheduling_strategy                = "REPLICA"
     task_definition                    = aws_ecs_task_definition.this.arn
 
+    network_configuration {
+      subnets = var.subnet_id
+    }
+
     deployment_controller {
         type = "ECS"
     }
@@ -32,16 +36,6 @@ resource "aws_ecs_service" "this" {
         container_port   = length(var.container_port_secondary) > 0 ? var.container_port_secondary : var.container_port
         target_group_arn = aws_lb_target_group.secondary[0].arn
       }
-    }
-
-    ordered_placement_strategy {
-        field = "attribute:ecs.availability-zone"
-        type  = "spread"
-    }
-
-    ordered_placement_strategy {
-        field = "instanceId"
-        type  = "spread"
     }
 
     depends_on = [

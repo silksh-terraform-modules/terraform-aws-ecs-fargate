@@ -7,7 +7,7 @@ resource "aws_lb_target_group" "this" {
   port                          = var.container_port
   protocol                      = "HTTP"
   slow_start                    = 0
-  target_type                   = "instance"
+  target_type                   = "ip"
   vpc_id                        = var.vpc_id
 
   health_check {

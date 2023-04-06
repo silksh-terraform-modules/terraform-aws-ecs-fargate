@@ -61,8 +61,10 @@ resource "aws_ecs_task_definition" "this" {
   cpu                      = var.cpu_limit
   execution_role_arn       = var.ecs_role_arn
   memory                   = var.memory_limit
-  network_mode             = "bridge"
+  network_mode             = "awsvpc"
   task_role_arn            = var.ecs_role_arn
+
+  requires_compatibilities = ["FARGATE"]
 
   container_definitions = module.container.json_map_encoded_list
   
