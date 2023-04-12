@@ -12,7 +12,7 @@ resource "aws_ecs_service" "this" {
     task_definition                    = aws_ecs_task_definition.this.arn
 
     network_configuration {
-      subnets = var.subnet_id
+      subnets = var.subnet_ids
     }
 
     deployment_controller {
