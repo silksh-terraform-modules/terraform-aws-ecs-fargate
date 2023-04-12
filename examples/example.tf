@@ -43,7 +43,7 @@ module "ecs_testfargate" {
   host_port                   = "8888"
   target_group_health_matcher = "200"
   target_group_health_path    = "/"
-  subnet_id                   = data.terraform_remote_state.infra.outputs.subnet_a_id
+  subnet_ids                  = data.terraform_remote_state.infra.outputs.subnet_a_id
 
   environment_files = [
     {
