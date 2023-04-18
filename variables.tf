@@ -275,3 +275,8 @@ variable "worker" {
 variable subnet_ids {
   default     = []
 }
+
+variable "enable_execute_command" {
+  default = false
+  description = "enable or no ecs exec"
+}
