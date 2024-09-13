@@ -276,6 +276,10 @@ variable subnet_ids {
   default     = []
 }
 
+variable security_groups {
+  default     = []
+}
+
 variable "enable_execute_command" {
   default = false
   description = "enable or no ecs exec"

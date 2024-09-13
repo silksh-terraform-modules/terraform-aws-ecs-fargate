@@ -2,18 +2,18 @@ locals {
   port_mappings = length(var.container_port_secondary) > 0 ? [ 
     {
       containerPort = var.container_port
-      hostPort      = var.host_port
+      hostPort      = var.container_port
       protocol      = var.service_protocol
     },
     {
       containerPort = var.container_port_secondary
-      hostPort      = var.host_port
+      hostPort      = var.container_port_secondary
       protocol      = var.service_protocol
     }
   ]:[
     {
       containerPort = var.container_port
-      hostPort      = var.host_port
+      hostPort      = var.container_port
       protocol      = var.service_protocol
     }
   ]
