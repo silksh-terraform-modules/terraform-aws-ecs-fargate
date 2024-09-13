@@ -128,7 +128,7 @@ variable "healt_check_grace_period" {
 }
 
 variable "launch_type" {
-  default = "EC2"
+  default = "FARGATE"
 }
 
 variable "zone_id" {
