@@ -127,6 +127,11 @@ variable "healt_check_grace_period" {
   description = "first healt check after startup"
 }
 
+variable "target_group_slow_start" {
+  default = 0
+  description = "first healt check from target group"
+
+}
 variable "launch_type" {
   default = "FARGATE"
 }
@@ -283,4 +288,9 @@ variable security_groups {
 variable "enable_execute_command" {
   default = false
   description = "enable or no ecs exec"
+}
+
+variable "command" {
+  default = null
+  description = "command passed to container"
 }

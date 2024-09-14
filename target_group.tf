@@ -6,7 +6,7 @@ resource "aws_lb_target_group" "this" {
   name                          = "${var.service_name}-${var.env_name}-${substr(uuid(), 0, 3)}"
   port                          = var.container_port
   protocol                      = "HTTP"
-  slow_start                    = 0
+  slow_start                    = var.target_group_slow_start
   target_type                   = "ip"
   vpc_id                        = var.vpc_id
 
