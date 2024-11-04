@@ -36,11 +36,14 @@ module "container" {
 
   log_configuration = {
     logDriver = "awslogs",
-    options = {
+    options = merge(
+    {
       awslogs-region = var.aws_region,
       awslogs-group = var.cloudwatch_log_group,
       awslogs-stream-prefix = var.env_name
-    }
+    },
+    var.cloudwatch_multiline_pattern != null ? { awslogs-multiline-pattern = var.cloudwatch_multiline_pattern } : {}
+    )
   }
   
   port_mappings = local.port_mappings
