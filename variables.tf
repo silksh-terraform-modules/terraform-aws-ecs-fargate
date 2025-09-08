@@ -304,3 +304,12 @@ variable "restart_policy" {
   })
   description = "The restart policy for a container. When you set up a restart policy, Amazon ECS can restart the container without needing to replace the task."
 }
+
+variable "deployment_controller" {
+  default     = "ECS"
+  description = "Deployment controller, allowed values are: ECS, CODE_DEPLOY, EXTERNAL"
+  validation {
+    condition     = var.image_id == "ECS" || var.image_id == "CODE_DEPLOY" || var.image_id == "EXTERNAL"
+    error_message = "Must be one of: ECS, CODE_DEPLOY, EXTERNAL"
+  }
+}
