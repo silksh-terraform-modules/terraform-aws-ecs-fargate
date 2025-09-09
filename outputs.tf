@@ -26,6 +26,10 @@ output "aws_lb_target_group_arn_suffix" {
   value = try(aws_lb_target_group.this[0].arn_suffix, "")
 }
 
+output "aws_lb_target_group_name" {
+  value = try(aws_lb_target_group.this[0].name, "")
+}
+
 output "app_task_definition_arn" {
   value = try(aws_ecs_task_definition.this.arn, "")
 }
