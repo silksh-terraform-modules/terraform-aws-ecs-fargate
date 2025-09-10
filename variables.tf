@@ -309,7 +309,7 @@ variable "deployment_controller" {
   default     = "ECS"
   description = "Deployment controller, allowed values are: ECS, CODE_DEPLOY, EXTERNAL"
   validation {
-    condition     = var.image_id == "ECS" || var.image_id == "CODE_DEPLOY" || var.image_id == "EXTERNAL"
+    condition     = var.deployment_controller == "ECS" || var.deployment_controller == "CODE_DEPLOY" || var.deployment_controller == "EXTERNAL"
     error_message = "Must be one of: ECS, CODE_DEPLOY, EXTERNAL"
   }
 }
