@@ -1,4 +1,64 @@
-resource "aws_ecs_service" "this" {
+locals {
+  is_cd = var.deployment_controller == "CODE_DEPLOY"
+}
+
+resource "aws_ecs_service" "cd" {
+  for_each = local.is_cd ? { cd = true } : {}
+  cluster                            = var.cluster_id
+  deployment_maximum_percent         = var.deploy_max_percent
+  deployment_minimum_healthy_percent = var.deploy_min_percent
+  desired_count                      = var.desired_count
+  enable_ecs_managed_tags            = false
+  health_check_grace_period_seconds  = var.healt_check_grace_period
+  launch_type                        = var.launch_type
+  name                               = var.service_name
+  #propagate_tags                     = "NONE"
+  scheduling_strategy    = "REPLICA"
+  task_definition        = aws_ecs_task_definition.this.arn
+  enable_execute_command = var.enable_execute_command
+
+  network_configuration {
+    subnets         = var.subnet_ids
+    security_groups = var.security_groups
+  }
+
+  deployment_controller {
+    type = var.deployment_controller
+  }
+
+  dynamic "load_balancer" {
+    for_each = var.worker == false ? [1] : []
+
+    content {
+      container_name   = var.service_name
+      container_port   = var.container_port
+      target_group_arn = aws_lb_target_group.this[0].arn
+    }
+  }
+
+  dynamic "load_balancer" {
+    for_each = length(var.lb_dns_name_secondary) > 0 ? [1] : []
+    content {
+      container_name   = var.service_name
+      container_port   = length(var.container_port_secondary) > 0 ? var.container_port_secondary : var.container_port
+      target_group_arn = aws_lb_target_group.secondary[0].arn
+    }
+  }
+
+  depends_on = [
+    aws_lb_target_group.this
+  ]
+
+  lifecycle {
+    ignore_changes = [
+      desired_count,
+      task_definition
+    ]
+  }
+}
+
+resource "aws_ecs_service" "rolling" {
+  for_each = local.is_cd ? {} : { rolling = true }
   cluster                            = var.cluster_id
   deployment_maximum_percent         = var.deploy_max_percent
   deployment_minimum_healthy_percent = var.deploy_min_percent
@@ -51,6 +111,9 @@ resource "aws_ecs_service" "this" {
   }
 }
 
+locals {
+  service = local.is_cd ? aws_ecs_service.cd["cd"] : aws_ecs_service.rolling["rolling"]
+}
 resource "aws_route53_record" "this" {
   count = var.worker == false ? 1 : 0
 

@@ -6,10 +6,13 @@ output "app_fqdn_secondary" {
   value = aws_route53_record.secondary[*].fqdn
 }
 
-output "app_service_name" {
-  value = aws_ecs_service.this.name
-}
+# output "app_service_name" {
+#   value = aws_ecs_service.this.name
+# }
 
+output "app_service_name" {
+  value = local.service.name
+}
 output "app_repository_url" {
   value = var.ecr_repository_url
 }
