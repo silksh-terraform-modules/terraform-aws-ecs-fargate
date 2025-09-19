@@ -52,6 +52,7 @@ resource "aws_ecs_service" "cd" {
   lifecycle {
     ignore_changes = [
       desired_count,
+      load_balancer,
       task_definition
     ]
   }
@@ -106,7 +107,8 @@ resource "aws_ecs_service" "rolling" {
 
   lifecycle {
     ignore_changes = [
-      desired_count
+      desired_count,
+      load_balancer
     ]
   }
 }
